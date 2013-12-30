@@ -12,6 +12,7 @@ button{margin:0}
 input,textarea{outline:none}
 .section{position:relative;min-height:580px;overflow:hidden;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;padding:20px 0}
 .section--pic-list{width:100%;height:200px;max-height:200px}
+.fbfan{color:#fff;background:#f1ae20;padding:5px;text-decoration:none;cursor:pointer}
 .section--search{background:#000;}
 .section--search:after{content:'';background:url("../img/pattern.png");position:absolute;width:100%;height:100%;pointer-events:none;top:0;left:0;z-index:1}
 .section--search__background{position:absolute;left:0;top:0;width:100%;height:100%;background:url("../img/bg.jpg") no-repeat center center;-webkit-background-size:cover;-moz-background-size:cover;background-size:cover;z-index:0;opacity:.6;-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=60)";filter:alpha(opacity=60)}
