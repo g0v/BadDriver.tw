@@ -9,7 +9,8 @@ BadDriver api server (Use YoumebJS framework& Mysql):
 ##Usage
 
 1.`npm install`
-2.`npm start`
+2.`bower install`
+3.`npm start`
 
 
 ##專案構想
