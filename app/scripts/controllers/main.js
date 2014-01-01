@@ -45,6 +45,14 @@
       }
     };
   };
+  app.service('regtool', [].concat(function(){
+    this.detect = function(v){
+      return console.log(v);
+    };
+    this.trunumber = function(v){
+      return v.replace(/\-|\s|\?/g, '').toUpperCase();
+    };
+  }));
   app.service('fb', ['$rootScope', '$localStorage', '$location', '$http'].concat(function($rootScope, $localStorage, $location, $http){
     this.login = function(path){
       if ($rootScope.fbid) {
@@ -83,7 +91,7 @@
       }
     };
   }));
-  app.controller('indexCtrl', ['$scope', '$location', '$rootScope', '$localStorage', '$http', 'idata', '$sce', 'fb'].concat(function($scope, $location, $rootScope, $localStorage, $http, idata, $sce, fb){
+  app.controller('indexCtrl', ['$scope', '$location', '$rootScope', '$localStorage', '$http', 'idata', '$sce', 'fb', 'regtool'].concat(function($scope, $location, $rootScope, $localStorage, $http, idata, $sce, fb, regtool){
     page.init();
     $http.defaults.useXDomain = true;
     $scope.idata = idata.data.data;
@@ -107,21 +115,27 @@
     $scope.urldata.push(idata.data.data.urlid);
     $scope.cCode = [];
     $scope.search = function(){
+      var carnum;
       $scope.resultdata = [];
       $scope.clicksearch = true;
+      carnum = regtool.trunumber($scope.carnumber);
       return $http({
         method: 'GET',
-        url: 'http://api.dont-throw.com/data/search?number=' + $scope.carnumber
+        url: 'http://api.dont-throw.com/data/search?number=' + carnum
       }).success(function(d){
         var _url;
         $scope.resaultnum = d.data.length;
         $scope.result = d.data;
-        if (d.data.length !== 0) {
+        console.log(d.data);
+        if (d.data.length !== 0 && d.data[0].from !== 'image') {
           $scope.noresult = false;
           _url = '//www.youtube.com/embed/' + d.data[0].urlid;
           $scope.resultdata[0] = $sce.trustAsResourceUrl(_url);
         } else {
           $scope.noresult = true;
+          if (d.data[0].imgpool) {
+            $scope.resultdata[0] = JSON.parse(d.data[0].imgpool)[0].u;
+          }
         }
       });
     };
@@ -339,7 +353,7 @@
     $scope.u = false;
     uploader = $fileUploader.create({
       scope: $scope,
-      url: 'http://api.dont-throw.com/data/upload/img',
+      url: 'http://127.0.0.1:3001/data/upload/img',
       filters: [function(item){
         console.log('filter1');
         return true;

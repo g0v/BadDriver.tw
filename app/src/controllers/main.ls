@@ -36,8 +36,11 @@ const cheatcodeDirective = ->
           scope.cCode.length = 0
         )
     )
-
-
+app.service 'regtool', <[]> ++  !->
+  @detect = (v)->
+    console.log(v)
+  @trunumber = (v) ->
+    v.replace(/\-|\s|\?/g,'').toUpperCase()
 app.service 'fb', <[$rootScope $localStorage $location $http]> ++  ($rootScope, $localStorage,$location,$http)!->
   @login = (path)->
     if ($rootScope.fbid)
@@ -73,7 +76,7 @@ app.service 'fb', <[$rootScope $localStorage $location $http]> ++  ($rootScope, 
         false
       )
 
-app.controller 'indexCtrl', <[$scope $location $rootScope $localStorage $http idata $sce fb]> ++ ($scope, $location, $rootScope, $localStorage, $http, idata, $sce, fb) !->
+app.controller 'indexCtrl', <[$scope $location $rootScope $localStorage $http idata $sce fb regtool]> ++ ($scope, $location, $rootScope, $localStorage, $http, idata, $sce, fb, regtool) !->
   page.init()
   $http.defaults.useXDomain = true
 
@@ -102,18 +105,23 @@ app.controller 'indexCtrl', <[$scope $location $rootScope $localStorage $http id
   $scope.search = ->
     $scope.resultdata = []
     $scope.clicksearch = true
+    carnum = regtool.trunumber($scope.carnumber) 
     $http(
       method: 'GET'
-      url: 'http://api.dont-throw.com/data/search?number='+$scope.carnumber
+      url: 'http://api.dont-throw.com/data/search?number='+carnum
     ).success((d)!->
       $scope.resaultnum = d.data.length 
       $scope.result = d.data
-      if( d.data.length !=0)
+      console.log d.data
+
+      if( d.data.length !=0 && d.data[0].from != 'image')
         $scope.noresult = false
         _url = '//www.youtube.com/embed/'+d.data[0].urlid
         $scope.resultdata[0] = $sce.trustAsResourceUrl _url
       else
         $scope.noresult =true
+        if(d.data[0].imgpool)
+          $scope.resultdata[0] = JSON.parse(d.data[0].imgpool)[0].u
     )
   $scope.goinfo = ->
     # console.log($scope.result[])
@@ -303,7 +311,7 @@ app.controller 'updateCtrl', <[$scope $location $http $rootScope $sce $fileUploa
     $scope.u = false
     uploader = $fileUploader.create(
       scope: $scope                      
-      url: 'http://api.dont-throw.com/data/upload/img'
+      url: 'http://127.0.0.1:3001/data/upload/img'
       filters: [
         (item) ->  
           console.log( 'filter1' )
