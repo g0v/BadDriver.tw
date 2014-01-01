@@ -353,7 +353,7 @@
     $scope.u = false;
     uploader = $fileUploader.create({
       scope: $scope,
-      url: 'http://127.0.0.1:3001/data/upload/img',
+      url: 'http://api.dont-throw.com/data/upload/img',
       filters: [function(item){
         console.log('filter1');
         return true;

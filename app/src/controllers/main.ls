@@ -311,8 +311,8 @@ app.controller 'updateCtrl', <[$scope $location $http $rootScope $sce $fileUploa
     $scope.u = false
     uploader = $fileUploader.create(
       scope: $scope                      
-      url: 'http://127.0.0.1:3001/data/upload/img'
-      filters: [
+      url: 'http://api.dont-throw.com/data/upload/img'
+      filters: [ 
         (item) ->  
           console.log( 'filter1' )
           true
@@ -328,7 +328,6 @@ app.controller 'updateCtrl', <[$scope $location $http $rootScope $sce $fileUploa
       $scope.mainpic = $scope.picPool[$index].u
     uploader.bind( 'complete', ( event, xhr, item)-> 
       # console.log( 'Complete: ' + xhr.response )
-      
       _x = angular.fromJson(xhr.response)
       $scope.change = true
       $scope.picPool.push({u:_x.n,m:0})
