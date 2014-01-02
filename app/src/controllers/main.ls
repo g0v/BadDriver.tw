@@ -69,8 +69,10 @@ app.service 'fb', <[$rootScope $localStorage $location $http]> ++  ($rootScope, 
                 thirdparty_type:'fb'
               }
               $http.post('http://api.dont-throw.com/member/add',data).success(->
-                $location.path('/'+path)
+                if(path)
+                  $location.path('/'+path)
               )
+              true
             scope : 'email,publish_actions'
           )
         false
@@ -224,7 +226,27 @@ app.controller 'detailCtrl', <[$scope $location $http infodata $sce $localStorag
           false
         )
     $scope.highlight = ->
-      alert('尚未完成XD!')
+      if(fb.login())
+        if infodata.data.from == 'image'
+          console.log(infodata.data.imgpool[0])
+          FB.ui(
+            method:'feed'
+            name: infodata.data.city+' '+infodata.data.location+' 發現違規駕駛'
+            link: 'http://baddriver.mobileweb.com.tw/#/detail/'+$stateParams.id
+            caption: ''
+            picture: 'https://s3-us-west-2.amazonaws.com/baddriver/'+JSON.parse(infodata.data.imgpool)[0].u
+            description: infodata.data.description
+          )
+        else
+          FB.ui(
+            method:'feed'
+            name: infodata.data.city+' '+infodata.data.location+' 發現違規駕駛'
+            link: 'http://baddriver.mobileweb.com.tw/#/detail/'+$stateParams.id
+            caption: ''
+            description: infodata.data.description
+          )
+      else
+        alert('請先登入!')
     $scope.addfunny = (c)->
       _i = new Date()
       maxN = 280
