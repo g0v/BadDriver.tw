@@ -247,17 +247,27 @@
       return alert('尚未完成XD!');
     };
     $scope.addfunny = function(c){
-      var _i;
+      var _i, maxN, minN, n, info;
       _i = new Date();
+      maxN = 280;
+      minN = 0;
+      n = Math.floor(Math.random() * (maxN - minN + 1)) + minN;
+      info = {};
       switch (c) {
       case 'boat':
-        $scope.boat.push(_i);
+        info.time = _i;
+        info.top = n;
+        $scope.boat.push(info);
         break;
       case 'delyear':
-        $scope.delyear.push(_i);
+        info.time = _i;
+        info.top = n;
+        $scope.delyear.push(info);
         break;
       case 'small3':
-        $scope.small3.push(_i);
+        info.time = _i;
+        info.top = n;
+        $scope.small3.push(info);
         break;
       }
     };
