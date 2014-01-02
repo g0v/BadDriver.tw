@@ -80,8 +80,11 @@
                 thirdparty_type: 'fb'
               };
               $http.post('http://api.dont-throw.com/member/add', data).success(function(){
-                return $location.path('/' + path);
+                if (path) {
+                  return $location.path('/' + path);
+                }
               });
+              true;
             }, {
               scope: 'email,publish_actions'
             });
@@ -244,7 +247,29 @@
       }
     };
     $scope.highlight = function(){
-      return alert('尚未完成XD!');
+      if (fb.login()) {
+        if (infodata.data.from === 'image') {
+          console.log(infodata.data.imgpool[0]);
+          return FB.ui({
+            method: 'feed',
+            name: infodata.data.city + ' ' + infodata.data.location + ' 發現違規駕駛',
+            link: 'http://baddriver.mobileweb.com.tw/#/detail/' + $stateParams.id,
+            caption: '',
+            picture: 'https://s3-us-west-2.amazonaws.com/baddriver/' + JSON.parse(infodata.data.imgpool)[0].u,
+            description: infodata.data.description
+          });
+        } else {
+          return FB.ui({
+            method: 'feed',
+            name: infodata.data.city + ' ' + infodata.data.location + ' 發現違規駕駛',
+            link: 'http://baddriver.mobileweb.com.tw/#/detail/' + $stateParams.id,
+            caption: '',
+            description: infodata.data.description
+          });
+        }
+      } else {
+        return alert('請先登入!');
+      }
     };
     $scope.addfunny = function(c){
       var _i, maxN, minN, n, info;
