@@ -163,7 +163,9 @@
     $scope.ddislike = infodata.data.dislike;
     $scope.ddesp = infodata.data.description;
     $scope.dfrom = infodata.data.from;
-    $scope.dimgpool = JSON.parse(infodata.data.imgpool);
+    if (infodata.data.imgpool !== '') {
+      $scope.dimgpool = JSON.parse(infodata.data.imgpool);
+    }
     _url = '//www.youtube.com/embed/' + infodata.data.urlid;
     $scope.durldata = $sce.trustAsResourceUrl(_url);
     $scope.boat = [];
