@@ -110,7 +110,9 @@
       _s = _tmp.join().replace(/\,/g, '');
       $rootScope.snumber.push(_s);
       $scope.urldata.push('//www.youtube.com/embed/' + v.urlid);
-      return v.imgpool = JSON.parse(v.imgpool);
+      if (v.imgpool !== '') {
+        return v.imgpool = JSON.parse(v.imgpool);
+      }
     });
     $scope.urldata[0] = $sce.trustAsResourceUrl($scope.urldata[0]);
     $scope.urldata[1] = $sce.trustAsResourceUrl($scope.urldata[1]);

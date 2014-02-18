@@ -94,7 +94,8 @@ app.controller 'indexCtrl', <[$scope $location $rootScope $localStorage $http id
     _s = _tmp.join().replace /\,/g,''
     $rootScope.snumber.push _s
     $scope.urldata.push '//www.youtube.com/embed/'+v.urlid
-    v.imgpool = JSON.parse(v.imgpool)
+    if v.imgpool != ''
+      v.imgpool = JSON.parse(v.imgpool)
   )
 
   $scope.urldata[0] = $sce.trustAsResourceUrl $scope.urldata[0]
